@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NYC Mobility Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="riders.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <div class="app-container">
+    <nav class="sidebar">
+      <div class="logo">
+        <i class="fas fa-taxi"></i>
+        <span>NYC Mobility</span>
+      </div>
+      <div class="nav-stats">
+        <div class="stat-card">
+          <i class="fas fa-route"></i>
+          <div>
+            <h3>Total Trips</h3>
+            <p id="total-trips">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-ruler"></i>
+          <div>
+            <h3>Avg. Distance</h3>
+            <p id="avg-distance">0 km</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-dollar-sign"></i>
+          <div>
+            <h3>Avg. Fare</h3>
+            <p id="avg-fare">$0.00</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <header class="header">
+        <h1>NYC Taxi Trip Analytics</h1>
+        <div class="filters">
+          <div class="filter-group">
+            <label>Date Range</label>
+            <div class="date-range">
+              <input type="date" id="filter-start-date" class="date-input">
+              <span>to</span>
+              <input type="date" id="filter-end-date" class="date-input">
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label>Distance (km)</label>
+            <div class="range-inputs">
+              <input type="number" id="filter-min-km" placeholder="Min" step="0.1">
+              <span>-</span>
+              <input type="number" id="filter-max-km" placeholder="Max" step="0.1">
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label>Trips Limit</label>
+            <input type="number" id="filter-record-limit" value="100" min="1" max="500">
+          </div>
+          
+          <button class="apply-btn" onclick="applyFilters()">
+            <i class="fas fa-filter"></i> Apply Filters
+          </button>
+        </div>
+      </header>
+
+      <div class="dashboard-grid">
+        <div class="map-container">
+          <div id="map"></div>
+          <div class="map-legend">
+            <div><span class="legend-dot start"></span> Pickup</div>
+            <div><span class="legend-dot end"></span> Dropoff</div>
+          </div>
+        </div>
+
+        <div class="insights-panel">
+          <div class="insight-card">
+            <h3><i class="fas fa-star"></i> Top Routes</h3>
+            <ul id="top-routes-list" class="insight-list"></ul>
+          </div>
+          
+          <div class="insight-card">
+            <h3><i class="fas fa-coins"></i> Top Fares</h3>
+            <ul id="top-fares-list" class="insight-list"></ul>
+          </div>
+          
+          <div class="insight-card">
+            <h3><i class="fas fa-chart-line"></i> Trip Analysis</h3>
+            <div id="trip-analysis" class="analysis-container">
+              <p>Apply filters to see analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="riders.js"></script>
+</body>
+</html>

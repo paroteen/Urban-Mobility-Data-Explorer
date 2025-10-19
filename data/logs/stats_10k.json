@@ -1,0 +1,10 @@
+{
+  "total_rows": 9999,
+  "cleaned_rows": 9953,
+  "excluded_rows": 46,
+  "excluded_counts": {
+    "bad_coordinates": 9,
+    "zero_distance": 36,
+    "implausible_speed": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "total_rows": 49999,
+  "cleaned_rows": 0,
+  "excluded_rows": 49999,
+  "excluded_counts": {
+    "bad_distance": 49953,
+    "bad_coordinates": 46
+  }
+}
