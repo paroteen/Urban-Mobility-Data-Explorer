@@ -3,11 +3,7 @@
 A comprehensive full-stack application for analyzing and visualizing New York City taxi trip data. This project demonstrates end-to-end data processing, from raw data ingestion to interactive visualization.
 
 ## Team Members
-- Kayisire Kira Armel
-- Israel Ayong
-- Sheja Dorian
-- Kenny Crepin Rukoro
-
+-OLivier Collins ITANGISHAKA
 ## Video Demonstration
 [![Project Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://youtu.be/YOUR_VIDEO_ID)
 
