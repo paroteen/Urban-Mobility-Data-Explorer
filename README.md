@@ -1,168 +1,172 @@
-# NYC Taxi App
+# Urban Mobility Data Explorer
 
-A lightweight Urban Mobility explorer that ingests NYC taxi-style data, cleans it, loads it into SQLite, and serves a simple API consumed by a Leaflet frontend. 
-by 
-1. Kayisire Kira Armel, 
-2. Israel Ayong
-3. Sheja Dorian
-4. Kenny Crepin Rukoro
+A comprehensive full-stack application for analyzing and visualizing New York City taxi trip data. This project demonstrates end-to-end data processing, from raw data ingestion to interactive visualization.
 
-## Tutorial
-<video controls src="docs/Recording.mov" title="Title"></video>
+## Team Members
+- Kayisire Kira Armel
+- Israel Ayong
+- Sheja Dorian
+- Kenny Crepin Rukoro
+
+## Video Demonstration
+[![Project Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://youtu.be/YOUR_VIDEO_ID)
 
 ## Features
-- **Backend**: Flask API with CORS over SQLite.
-- **Data prep**: `backend/clean_data.py` transforms raw CSV → cleaned CSV.
-- **Loader**: `backend/load_data.py` bulk-inserts cleaned CSV into SQLite.
-- **Frontend**: `frontend/riders.html` + `riders.js` renders a map and basic stats using API calls.
+
+### Data Processing Pipeline
+- **Data Cleaning**: Robust preprocessing of raw NYC taxi trip data
+- **Data Validation**: Ensures data quality and consistency
+- **ETL Process**: Efficient extraction, transformation, and loading of trip data
+
+### Backend (Flask API)
+- RESTful API endpoints for data retrieval
+- Efficient querying with SQLite
+- CORS support for frontend integration
+- Data aggregation and analysis endpoints
+
+### Frontend (Interactive Dashboard)
+- Interactive map visualization using Leaflet
+- Real-time data filtering and visualization
+- Responsive design for all device sizes
+- Intuitive user interface for data exploration
 
 ## Tech Stack
-- Python 3.10+, Flask, flask-cors, sqlite3
-- HTML/CSS/JS, Leaflet, OpenStreetMap tiles
-- CSV → SQLite
 
-## Repository Structure
-- `backend/app.py` Flask API
-- `backend/database.py` SQLite connection
-- `backend/init_db.py` applies `backend/schema.sql`
-- `backend/clean_data.py` raw → cleaned CSV
-- `backend/load_data.py` cleaned CSV → SQLite
-- `frontend/riders.html|.css|.js` web UI
-- `data/raw/` raw CSVs (gitignored)
-- `data/cleaned_data.csv` cleaned output
-- `docs/cleaned_schema.md` cleaned data schema
-
-## Prerequisites
+### Backend
 - Python 3.10+
-- A raw CSV at `data/raw/train.csv` (Kaggle-like columns: pickup/dropoff timestamps, lat/lon, trip_duration, etc.)
+- Flask
+- SQLite3
+- Pandas (for data processing)
+- Flask-CORS
+
+### Frontend
+- HTML5, CSS3, JavaScript (ES6+)
+- Leaflet.js for interactive maps
+- Chart.js for data visualization
+- Modern CSS with Flexbox/Grid
+
+## Project Structure
+
+```
+.
+├── backend/
+│   ├── __pycache__/
+│   ├── api_routes.py       # API endpoint definitions
+│   ├── app.py              # Flask application
+│   ├── clean_data.py       # Data cleaning and preprocessing
+│   ├── clean_transform.py  # Data transformation logic
+│   ├── data_cleaning.py    # Data quality functions
+│   ├── database.py         # Database connection and queries
+│   ├── init_db.py          # Database initialization
+│   ├── load_data.py        # Data loading utilities
+│   ├── requirements.txt    # Python dependencies
+│   └── schema.sql          # Database schema
+├── data/
+│   ├── logs/               # Processing logs and reports
+│   ├── processed/          # Cleaned and processed data
+│   └── raw/                # Raw data files (gitignored)
+├── database/
+│   ├── cleaned_data_10k.csv
+│   ├── nyc_taxi.db         # SQLite database
+│   └── schema.sql
+├── docs/
+│   ├── ERD Diagram.jpeg
+│   ├── cleaned_schema.md   # Data model documentation
+│   └── validation_rules.md # Data validation rules
+├── frontend/
+│   ├── riders.html         # Main dashboard
+│   ├── riders.css          # Styling
+│   └── riders.js           # Frontend logic
+├── .gitignore
+├── README.md
+└── requirements.txt
+```
 
 ## Installation
-```bash
-pip install -r backend/requirements.txt
-```
 
-## Configuration
-- `SQLITE_PATH` (optional): path to the SQLite DB file. Default: `backend/nyc_taxi.db`
-- `PORT` (optional): backend port. Default: `5000`
-- Frontend expects backend at `http://localhost:5000` (configurable via `API_BASE` in `frontend/riders.js`)
+### Prerequisites
+- Python 3.10 or higher
+- Node.js and npm (for frontend development)
+- Git
 
-Example `.env` in repo root:
-```
-SQLITE_PATH=backend/nyc_taxi.db
-PORT=5000
-```
+### Setup
 
-## Data Pipeline
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/paroteen/Urban-Mobility-Data-Explorer.git
+   cd Urban-Mobility-Data-Explorer
+   ```
 
-### 1) Initialize the database
-Creates tables and indexes in SQLite.
-```bash
-python backend/init_db.py
-```
+2. **Set up Python environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r backend/requirements.txt
+   ```
 
-### 2) Clean the raw data
-Transforms `data/raw/train.csv` into `data/cleaned_data.csv` with exact columns used by the loader.
-```bash
-python backend/clean_data.py
-```
-Outputs columns (see `docs/cleaned_schema.md`):
-- `pickup_datetime, dropoff_datetime, pickup_lat, pickup_lon, dropoff_lat, dropoff_lon, trip_distance_km, trip_duration_sec, fare_amount, tip_amount, passenger_count, payment_type, avg_speed_kmh, fare_per_km, pickup_hour, weekday, is_weekend, haversine_km`
+3. **Initialize the database**
+   ```bash
+   python backend/init_db.py
+   python backend/load_data.py
+   ```
 
-Notes:
-- `fare_amount`, `tip_amount`, `payment_type` may be NULL if not present in the raw data.
-- `avg_speed_kmh`, `fare_per_km`, `pickup_hour`, `weekday`, `is_weekend`, `haversine_km` are computed.
+4. **Run the Flask server**
+   ```bash
+   python backend/app.py
+   ```
 
-### 3) Load the cleaned data
-Inserts into `trips` table.
-```bash
-python backend/load_data.py --csv data/cleaned_data.csv
-# options:
-# --db /path/to/nyc_taxi.db
-# --truncate   # clear existing rows before load
-# --table trips
-```
+5. **Open the frontend**
+   - Open `frontend/riders.html` in a modern web browser
+   - The frontend expects the backend to be running at `http://localhost:5000`
 
-## Run the Backend
-```bash
-python backend/app.py
-# Serves at http://localhost:${PORT:-5000}
-# Health: http://localhost:5000/health
-```
+## Usage
 
-## Run the Frontend
-- Open `frontend/riders.html` in your browser.
-- The page will fetch `/api/summary` and `/api/trips` and display results on the map and summary cards.
-- If your backend runs elsewhere, update `API_BASE` at the top of `frontend/riders.js`.
+1. **Viewing Trip Data**
+   - The map displays pickup and dropoff locations
+   - Click on markers to view trip details
+   - Use the date range picker to filter trips by date
 
-## API Reference
+2. **Analyzing Patterns**
+   - The dashboard shows key metrics and visualizations
+   - Filter data using the sidebar controls
+   - Hover over charts for detailed information
 
-- `GET /health`
-  - Response: `{ "status": "ok" }`
+## Data Model
 
-- `GET /api/summary`
-  - Response:
-```json
-{
-  "total_trips": 12345,
-  "avg_speed_kmh": 18.234,
-  "avg_fare_per_km": 3.12
-}
-```
+### Key Entities
+- **Trips**: Core entity containing trip details
+- **Locations**: Pickup and dropoff points
+- **Time Slots**: Temporal analysis of trip patterns
 
-- `GET /api/trips`
-  - Query params:
-    - `start` `YYYY-MM-DD HH:MM:SS`
-    - `end` `YYYY-MM-DD HH:MM:SS`
-    - `min_distance` number (km)
-    - `max_distance` number (km)
-    - `page` default 1
-    - `per_page` default 100 (max 500)
-  - Response:
-```json
-{
-  "page": 1,
-  "per_page": 100,
-  "results": [
-    {
-      "id": 1,
-      "pickup_datetime": "2016-03-14 17:24:55",
-      "dropoff_datetime": "2016-03-14 17:32:30",
-      "pickup_lat": 40.7679,
-      "pickup_lon": -73.9821,
-      "dropoff_lat": 40.7656,
-      "dropoff_lon": -73.9646,
-      "trip_distance_km": 2.1,
-      "trip_duration_sec": 455,
-      "fare_amount": null,
-      "tip_amount": null,
-      "passenger_count": 1,
-      "payment_type": null,
-      "avg_speed_kmh": 16.6,
-      "fare_per_km": null,
-      "pickup_hour": 17,
-      "weekday": 0,
-      "is_weekend": 0,
-      "haversine_km": 2.07
-    }
-  ]
-}
-```
+### Database Schema
+See [docs/cleaned_schema.md](docs/cleaned_schema.md) for detailed schema documentation.
 
-## Troubleshooting
-- **No markers on map**: Ensure DB has rows (`/api/summary`), then re-run: init → clean → load.
-- **CORS errors**: `flask-cors` is enabled; verify backend is running and `API_BASE` is correct.
-- **Date filters**: Use `YYYY-MM-DD HH:MM:SS` format.
-- **SQLite performance**: `executemany` is used; keep DB on SSD; avoid external processes locking the DB file.
+## API Endpoints
 
-## Development Notes
-- Environment variables: `SQLITE_PATH`, `PORT`.
-- Data locations: raw files in `data/raw/` (gitignored), cleaned at `data/cleaned_data.csv`.
-- Code style: concise docstrings and minimal comments for clarity.
+### Trips
+- `GET /api/trips` - Get paginated list of trips
+- `GET /api/trips/<trip_id>` - Get details of a specific trip
+- `GET /api/trips/stats` - Get trip statistics
+
+### Analytics
+- `GET /api/analytics/hourly` - Hourly trip patterns
+- `GET /api/analytics/daily` - Daily trip patterns
+- `GET /api/analytics/locations` - Popular locations
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
-MIT (or your preferred license).
 
-## Acknowledgements
-- OpenStreetMap tiles and Leaflet for mapping.
-- NYC taxi-style datasets for sample data.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Acknowledgments
+- [NYC Taxi & Limousine Commission](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page) for the dataset
+- [OpenStreetMap](https://www.openstreetmap.org/) for map tiles
+- [Leaflet](https://leafletjs.com/) for interactive maps
+- [Chart.js](https://www.chartjs.org/) for data visualization
